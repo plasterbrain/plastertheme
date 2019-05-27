@@ -37,10 +37,10 @@ if ( ! function_exists( 'magic_hat_entry_header' ) ) :
  * @param int $id			The ID of the post to use in ID attributes. Default get_the_ID().
  */
 function magic_hat_entry_header( $title = null, $id = null ) {
-	if ( is_front_page() ) {
+	if ( is_front_page() && get_option( 'show_on_front' ) == 'page' ) {
 		return;
 	}
-	
+
 	$title = $title ?: get_the_title();
 	$id = $id ?: get_the_id();
 
@@ -84,14 +84,34 @@ function magic_hat_get_entry_meta() {
 	$updated = false;
 	if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
 		$updated = sprintf(
-			'<time class="meta meta-date meta-date-updated" datetime="%1$s">%2$s</time>',
+			'<time datetime="%1$s">%2$s</time>',
 			esc_attr( get_the_modified_date( DATE_W3C ) ),
 			esc_html( get_the_modified_date() )
 		);
 	}
 
-	/* translators: %s: post date. */
-	$output = '<span class="meta meta-date meta-date-posted">' . sprintf( esc_html__( 'Posted on %s', 'magic-hat' ), $posted ) . '<br /></span>';
+	$output = '<div class="meta meta-date">
+    <span class="meta-date-posted">' . $posted . '<br /></span>';
+
+	/*
+	if ( is_single() && $updated ) {
+		// translators: %s: post date.
+		$output .= '<span class="meta-date-updated">' . sprintf( esc_html__( 'Updated: %s', 'magic-hat' ), $updated ) . '</span>';
+	}
+	*/
+
+    $output .= '</div>';
+
+	if ( get_post_type() === 'game' ) {
+		if ( function_exists( 'gm_devs' ) ) {
+			$output .= '
+			<span class="meta meta-dev">' . gm_devs( false ) . '</span>';
+		}
+		if ( function_exists( 'gm_engine' ) ) {
+			$output .= '
+			<span class="meta meta-engine">' . esc_html__( 'Engine:', 'magic-hat' ) . gm_engine( false ) . '</span>';
+		}
+	}
 
 	if ( ! is_singular() ) {
 		$category = get_the_category();
@@ -107,7 +127,9 @@ function magic_hat_get_entry_meta() {
 		$output .= '<span class="meta meta-comments"><a href="' . $permalink . '#comments">' . sprintf( esc_html__( '%d comments', 'magic-hat' ), get_comments_number() ) . '</a></span>';
 	}
 
+	/*
 	$output .= '<span class="meta meta-permalink"><a href="' . $permalink . '">' . esc_html__( 'Permalink', 'magic-hat' ) . '</a></span>';
+	*/
 
 	$output .= sprintf(
 		'<a class="meta meta-link meta-link-edit" href="%s">' .
@@ -124,11 +146,6 @@ function magic_hat_get_entry_meta() {
 		get_edit_post_link(),
 		get_the_title()
 	);
-
-	if ( is_single() && $updated ) {
-		/* translators: %s: post date. */
-		$output .= '<span class="meta meta-date meta-date-updated"><br />' . sprintf( esc_html__( 'Last updated %s', 'magic-hat' ), $updated ) . '</span>';
-	}
 	return $output;
 }
 endif;
@@ -155,18 +172,28 @@ if ( ! function_exists( 'magic_hat_entry_footer' ) ) :
  * @since 1.0.0
  */
 function magic_hat_entry_footer() {
-	// Hide category and tag text for pages.
-	if ( 'post' === get_post_type() ) {
-		$tags_list = get_the_tag_list();
-		if ( $tags_list ) {
-			printf( '<p class="meta meta-tags">%s</p>', $tags_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	$type = get_post_type();
+	if ( $type === 'post' || $type === 'game' ) {
+		/* translators: used between list items, with a space after the comma */
+		$sep = esc_html__( ', ', 'magic-hat' );
+		if ( 'post' === $type ) {
+			$tag_list = get_the_tag_list();
+			$cat_list = get_the_category_list( $sep );
+			/* translators: %s is list of categories. */
+			$cat_label = sprintf( esc_html__( 'Posted in %s', 'magic-hat' ), $cat_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		} else if ( 'game' === $type ) {
+			$id = get_the_ID();
+			$tag_list = get_the_term_list( $id, 'game_tag' );
+			$cat_list = get_the_term_list( $id, 'genre', '', $sep );
+			/* translators: %s is list of genre categories */
+			$cat_label = sprintf( esc_html__( 'Genres: %s', 'magic-hat' ), $cat_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 
-		/* translators: used between list items, there is a space after the comma */
-		$categories_list = get_the_category_list( esc_html__( ', ', 'magic-hat' ) );
-		if ( $categories_list ) {
-			/* translators: 1: list of categories. */
-			printf( '<span class="meta meta-categories">' . esc_html__( 'Posted in %1$s', 'magic-hat' ) . '</span>', $categories_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		if ( $cat_list ) {
+			echo '<span class="meta meta-categories">' . $cat_label . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		}
+		if ( $tag_list ) {
+			echo '<p class="meta meta-tags">' . $tag_list . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 	}
 
@@ -223,8 +250,8 @@ endif;
 
 if ( ! function_exists( 'magic_hat_content_excerpt' ) ) :
 /**
- * Echoes the post content or the excerpt of the post depending on whether the current
- * page is a singular or archive view.
+ * Echoes the post content or the excerpt of the post depending on whether the
+ * current page is a singular or archive view.
  *
  * @see the_content
  * @see the_excerpt
@@ -237,17 +264,18 @@ function magic_hat_content_excerpt() {
 		the_content();
 		magic_hat_link_pages();
 	} else {
+        $readmore = esc_html__( 'Read More (続きを読む)' );
 		/* Use custom excerpt if the user added a <!-- more --> tag */
 		if ( strpos( $post->post_content, '<!--more-->' ) ) {
-			the_content( sprintf( wp_kses(
-				/* translators: %s: Name of current post. Only visible to screen readers */
-				__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'magic-hat' ),
-				array( 'span' => array( 'class' => array() ) ) ),
-				get_the_title()
-			) );
-		}
-		else {
-			the_excerpt();
+			the_content( $readmore );
+		} else {
+			echo '
+			<div class="entry__excerpt">';
+				the_excerpt();
+				/* translators: %s is the post title. */
+				echo '
+				<a class="more-link" href="' . get_the_permalink() . '" aria-label="' . sprintf( esc_html__( 'Continue reading %s' ), get_the_title() ) . '">' . $readmore . '</a>
+			</div>';
 		}
 	}
 }
@@ -479,6 +507,15 @@ function magic_hat_the_post_navigation( $args = array() ) {
     echo $navigation; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 endif;
+
+function magic_hat_trackback_url() {
+	?>
+	<div class="trackback-url">
+		<h2 class="trackback-url__title"><?php esc_html_e("Trackback"); ?></h2>
+		<input class="trackback-url__link" type="text" readonly value="<?php trackback_url(); ?>" onclick="this.select()">
+	</div>
+	<?php
+}
 
 /**
  * Prints a list of monthly archive links for the given year.

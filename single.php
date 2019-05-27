@@ -25,6 +25,12 @@ get_header();
 		?>
 
 		<?php
+		if ( get_theme_mod( 'show-trackback-url', true ) ) {
+			magic_hat_trackback_url();
+		}
+		?>
+
+		<?php
 		if ( comments_open() || get_comments_number() ) {
 			comments_template();
 		}

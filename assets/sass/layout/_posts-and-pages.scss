@@ -16,16 +16,26 @@
 
 //* ======= Pages ======= *//
 
+.page__header {
+	margin-top: 2rem; // Avoid overlap with breadcrumbs
+}
+
+.page__title-error {
+	font-size: calc(1.5rem + 4vw);
+	padding: 0;
+}
+
+.page__subtitle {
+	font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+	font-size: 1rem;
+	margin-bottom: 1rem;
+	margin-top: -1rem;
+}
+
 /* Currently only used for archive descriptions. */
 .page__desc {
 	p {
 		margin: 0;
-	}
-}
-
-.search-results {
-	.search-form {
-		margin-bottom: 2rem;
 	}
 }
 
@@ -34,7 +44,7 @@
 
 /* All posts */
 .post,
-.type-attachment {
+article[class*="type-"] {
 	margin: 0 0 2rem;
 	padding: $size__post-padding;
 	position: relative;
@@ -43,7 +53,23 @@
 		padding-bottom: 0.3rem; // Bring it closer to the meta section
 	}
 
+	.entry__excerpt {
+		p,
+		a {
+			display: inline; // Inline the "read more" link
+		}
+	}
+
+	.more-link {
+		font-family: Futura;
+		font-size: 0.8em;
+		text-transform: uppercase;
+	}
+
 	.entry__meta {
+		display: flex;
+		flex-wrap: wrap;
+
 		.meta,
 		.meta__tag {
 			margin-right: 0.5rem;
@@ -51,6 +77,27 @@
 
 		.meta-tags {
 			margin: 0;
+		}
+
+		.meta-date {
+			&::before {
+				content: "日付";
+			}
+		}
+
+		.meta-date-updated {
+			display: block;
+			font-size: 0.8em;
+			margin: -0.2em 0 0.5em;
+			text-align: right;
+		}
+
+		.meta-dev {
+			ul {
+				display: inline;
+				list-style: none;
+				padding: 0;
+			}
 		}
 	}
 
@@ -112,10 +159,6 @@
 
 		}
 	}
-
-	.entry__meta-footer {
-		margin: 2rem 0;
-	}
 }
 
 /* Single displays */
@@ -132,7 +175,7 @@
 .search {
 	.page,
 	.post,
-	.type-attachment {
+	article[class*="type-"] {
 		margin: 1rem 0;
 
 		.attachment-post-thumbnail {
@@ -141,8 +184,76 @@
 	}
 }
 
+.search-number,
+.search-query {
+	color: #e9e3bd;
+}
+
+.search-query {
+	font-weight: 100;
+}
+
+.page-template-page-plaincontent {
+	.site__content {
+		flex: 0 0 100%;
+	}
+
+	.entry__title,
+	.nav-breadcrumbs {
+		display: none;
+	}
+
+	article {
+		background: none;
+	}
+}
+
+.game__list-links {
+	display: inline-block;
+}
 
 //* ==== Comments ==== *//
+
+.page__title-error,
+.comments__title,
+.comment-reply-title,
+.trackback-url__title {
+	&::after {
+		color: #497760;
+		display: block;
+		font-size: 0.4em;
+		font-weight: 100;
+		text-shadow: none;
+	}
+}
+
+.comments__title,
+.page__title-error {
+	color: #fff;
+	text-shadow: 0.03em 0.03em 0 #195c46, -0.02em -0.02em 0 #d100c0b3, 0.06em 0.03em 0 #3108ffa3, -0.03em -0.03em 0 #000000a6;
+	text-transform: uppercase;
+}
+
+.comments__title {
+	&::after {
+		content: "コメント";
+	}
+}
+
+.page__title-error {
+	&::after {
+		content: "エラー! 見つかりません!";
+		margin: -0.2em 0 0.5em;
+	}
+}
+
+.trackback-url__title::after {
+	content: "トラックバック";
+}
+
+.comment-reply-title::after {
+	content: "コメントの投稿";
+}
 
 .comments__status {
 	margin: 0;
@@ -166,6 +277,20 @@
 
 	.comment__body {
 		padding: 1rem; // Padding on article to avoid stacking in comment threads
+	}
+}
+
+.comment-form-comment__title {
+	font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+	font-size: 1em;
+	font-weight: 400;
+
+	&::after {
+		color: #354648;
+		content: "本文";
+		font-size: 0.8em;
+		font-weight: 500;
+		margin-left: 0.4em;
 	}
 }
 
@@ -215,7 +340,6 @@
 		margin-top: 0;
 	}
 }
-
 
 //* == Post Formats == *//
 

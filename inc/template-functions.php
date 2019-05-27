@@ -21,7 +21,7 @@ if ( ! function_exists( 'magic_hat_auto_title' ) ) :
  * @param WP_Post $post Post object being updated.
  */
 function magic_hat_auto_title( $post_id, $post ) {
-	if ( ! wp_is_post_revision( $post_id ) && empty( $post->post_title ) ) {
+	if ( ! wp_is_post_revision( $post_id ) && $post->post_type != "nav_menu_item" && empty( $post->post_title ) ) {
 		$content = trim( strip_tags( $post->post_content ) );
 		$title = substr( $content, 0, 50 );
 		/* translators: default post title based on post ID, e.g. "Post 123" */
@@ -95,8 +95,8 @@ add_filter( 'body_class', 'magic_hat_body_classes' );
 
 if ( ! function_exists( 'magic_hat_term_links_tags' ) ) :
 /**
- * Adds a hashtag before tags in a tag list. The term_links-{$taxonomy} filter is
- * necessary in order to get the pound sign inside the enclosing anchor element.
+ * Adds a hashtag before tags in a tag list. The term_links-{$taxonomy} filter
+ * is necessary in order to get the # inside the enclosing anchor element.
  *
  * @see get_the_term_list
  *
@@ -122,6 +122,7 @@ function magic_hat_term_links_tags( $links ) {
 }
 endif;
 add_filter( 'term_links-post_tag', 'magic_hat_term_links_tags' );
+add_filter( 'term_links-game_tag', 'magic_hat_term_links_tags' );
 
 /**
  * Filters the string that gets added to excerpts before the <!-- more --> tag, which
@@ -169,9 +170,10 @@ function magic_hat_excerpt_password( $content ) {
 endif;
 add_filter( 'the_excerpt', 'magic_hat_excerpt_password' );
 
+if ( ! function_exists( 'magic_hat_protected_title_format' ) ) :
 /**
- * Changes the prefix on password-protected posts from "Protected:" to "Locked:" or
- * "Unlocked:" if the password has been entered already.
+ * Changes the prefix on password-protected posts from "Protected:" to
+ * "Locked:" or "Unlocked:" if the password has been entered already.
  *
  * @since 1.0.0
  *
@@ -188,7 +190,31 @@ function magic_hat_protected_title_format( $title, $post ) {
 		return esc_html__( 'Unlocked: %s', 'magic-hat' );
 	}
 }
+endif;
 add_filter( 'protected_title_format', 'magic_hat_protected_title_format', 10, 2 );
+
+if ( ! function_exists( 'magic_hat_the_content_more_link' ) ) :
+/**
+ * Adds an aria-label that says "continue reading [article name]" so you can
+ * make the visible "read more" tag text whatever you want.
+ *
+ * @param  string $link String containing the read more link passed by {@see
+ * 						get_the_content()}
+ * @return string       The updated read more link.
+ */
+function magic_hat_the_content_more_link( $link ) {
+	$needle = '<a href="';
+	$pos = strpos( $link, $needle );
+	if ( $pos !== false ) {
+		/* translators: %s is the name of the blog post. */
+		$label = sprintf( esc_attr__( 'Continue reading %s' ),
+		get_the_title() );
+    	$link = substr_replace( $link, '<a aria-label="' . $label . '" href="', $pos, strlen( $needle ) );
+	}
+	return $link;
+}
+endif;
+add_filter( 'the_content_more_link', 'magic_hat_the_content_more_link' );
 
 /**
  * Filters the sizes of different tags in the Tag Cloud Widget.

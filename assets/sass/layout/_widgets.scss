@@ -39,7 +39,6 @@
 	}
 }
 
-
 .rss-widget-icon {
 	display: none;
 }
@@ -53,5 +52,100 @@
 
 		// Remove margin when a list is the only element of a widget
 		margin: 0;
+	}
+}
+
+.widget_categories {
+	h2 + ul {
+		list-style: none;
+		padding: 0;
+
+		.cat-item {
+			display: inline;
+
+			a {
+				background: #fff;
+				border: 2px solid black;
+				color: black;
+				font-family: futura;
+				font-size: 0.8em;
+				font-weight: 800;
+				margin-bottom: 0.2em;
+				padding: 0.25em 0.5em 0;
+				text-transform: uppercase;
+
+				&:hover,
+				&:active,
+				&:focus {
+					background: #ffe100;
+				}
+			}
+		}
+	}
+
+	.widget-title {
+		&::after {
+			content: "カテゴリ";
+		}
+	}
+}
+
+.widget_search {
+	background: #181e08;
+	border-radius: 0.3em;
+	padding: 0.1em;
+
+	label {
+		width: 100%;
+	}
+}
+
+.widget-title {
+	background: black;
+	color: white;
+	font-size: ms(3);
+	padding: 0.2em 0.3em;
+	margin-bottom: 0.5em;
+	transform: rotate(1deg);
+
+	&::after {
+		color: #ffe100;
+		font-size: 0.8em;
+		margin-left: 0.2em;
+		text-shadow: 1px 1px 0 #4dffc6cf, -1px -1px 0 #d100c0b3, 3px 1px 0 #3108ffa3, -1px -1px 0 #000000a6;
+	}
+}
+
+.widget_archive {
+	.widget-title {
+		&::after {
+			content: "アーカイブ";
+		}
+	}
+}
+
+.widget_recent_comments {
+	.widget-title {
+		&::after {
+			content: "カテゴリ";
+		}
+	}
+}
+
+.widget_recent_entries {
+	ul {
+		list-style: none;
+		padding-left: 0.7em;
+	}
+
+	.widget-title {
+		&::after {
+			content: "エントリー";
+		}
+	}
+
+	.post-date {
+		display: block;
+		font-size: 0.8em;
 	}
 }

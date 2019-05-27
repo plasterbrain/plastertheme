@@ -30,6 +30,8 @@ body {
 
 	.site__content {
 		flex: 1;
+		margin: 0 auto;
+		max-width: 1200px;
 
 		.content-primary,
 		.content-secondary {
@@ -40,11 +42,11 @@ body {
 			margin-top: 3rem;
 		}
 	}
+}
 
-	&.boxed {
-		margin: 0 auto;
-		max-width: $size__boxed-width;
-	}
+.boxed {
+	margin: 0 auto;
+	max-width: $size__boxed-width;
 }
 
 .header__banner,
@@ -69,4 +71,24 @@ body {
 .site__content::after,
 .site__footer::after {
 	clear: both; // Because WordPress lives in the 1800s
+}
+
+.error404,
+.page-template-page-fullwidth {
+	.site {
+		.site__content {
+			.content-primary {
+				flex: 0 0 100%;
+			}
+		}
+	}
+}
+
+.error404 {
+	.site__container {
+		align-items: center;
+		display: flex;
+		height: 100%;
+		text-align: center;
+	}
 }

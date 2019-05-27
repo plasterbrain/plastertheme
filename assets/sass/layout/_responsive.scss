@@ -8,17 +8,27 @@
 
 /* Nav menu switches to desktop version. */
 @media screen and (min-width: 600px) {
-	.nav__list-desktop-h {
-		display: flex !important;
+	.nav-main {
+		.nav__list-desktop-h {
+			margin: 0 auto;
+			max-width: 1200px;
+			padding: 0 1.5em;
+		}
 	}
 
-	.nav-top,
-	.nav-main {
-		padding: 0 2rem;
+	.nav__list-desktop-h {
+		display: flex !important;
+		background: none !important;
 	}
 
 	.nav-main__toggle {
 		display: none;
+	}
+
+	.nav__list {
+		.menu-item:not(:first-child) {
+			padding-left: 0.5em;
+		}
 	}
 
 	.sub-menu-focused {
@@ -75,6 +85,10 @@
 				}
 			}
 		}
+	}
+
+	.entry__meta {
+		flex-wrap: none;
 	}
 
 	.comment__footer {
@@ -150,14 +164,16 @@
 		align-items: center;
 		display: flex;
 		justify-content: space-between;
+		margin: 0 auto;
+		max-width: 1200px;
 		width: 100%;
 	}
 
-	.banner-branding {
+	.banner__branding {
 		flex: 0 0 $size__header-title-width;
 	}
 
-	.banner-widget {
+	.banner__widget {
 		flex: 0 0 (100% - $size__header-title-width);
 	}
 

@@ -32,8 +32,7 @@ textarea {
 
 .site__title {
 	line-height: 1;
-	margin: 0;
-	padding: 0;
+	margin: 2em 0 0;
 }
 
 .site__desc {
@@ -65,7 +64,6 @@ hgroup {
 a {
 	background-color: transparent;
 	text-decoration: none;
-	transition: all 0.3s;
 
 	&:hover,
 	&:active {
@@ -106,10 +104,16 @@ strong {
 }
 
 blockquote {
+	font-family: Consolas, monospace;
+	font-size: 1.2rem;
+	font-style: italic;
+	line-height: 1.4;
 	text-align: center;
 
 	cite {
 		display: block;
+		font-size: 1rem;
+		font-style: normal; // Unset italic
 		margin-bottom: 1rem;
 
 		&::before {
@@ -188,11 +192,14 @@ mark {
 
 /* Makes it look like a grey keyboard button! */
 kbd {
-	background: #eee;
-	border: 1px solid #cecece;
+	background: #747474;
+	border: 1px solid #0c0a0a;
 	border-radius: 0.2em;
-	box-shadow: 1px 1px 1px #d6d6d6, 1px 1px 1px white inset;
+	box-shadow: 1px 2px 0 #483a3a, 1px 1px 0 white inset;
+	color: #202020;
 	font-family: inherit;
+	font-size: 0.9em;
+	margin: 0 0.2em 0 0.1em;
 	padding: 0 0.5em;
 }
 

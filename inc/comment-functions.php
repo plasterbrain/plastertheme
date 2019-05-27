@@ -164,7 +164,7 @@ function magic_hat_comment_labels() {
         'title_reply' => esc_html( get_theme_mod( 'reply-title', __( 'Share your thoughts', 'magic-hat' ) ) ),
         'title_reply_to' => $reply_to,
         'cancel_reply_link' => esc_html( get_theme_mod( 'cancel-reply-title', __( 'Cancel Reply', 'magic-hat' ) ) ),
-        'label_submit' => esc_html( get_theme_mod( 'comment-submit-title', __( 'Post Comment', 'magic-hat' ) ) ),
+        'label_submit' => esc_html( get_theme_mod( 'comment-submit-title', __( 'Post (送信)', 'magic-hat' ) ) ),
     );
 
     /* Wrap the before/after notes in p tags if they exist */
@@ -189,7 +189,7 @@ function magic_hat_comment_labels() {
 
     $labels['comment_field'] = '
     <div class="comment-form-comment">' .
-        $comment_label . '
+        '<h4 class="comment-form-comment__title">' . $comment_label . '</h4>
         <textarea aria-describedby="comment-error" id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea>
         <p id="comment-error" class="error"></p>
     </div>

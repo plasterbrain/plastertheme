@@ -16,12 +16,18 @@ global $wp_query;
 		<header class="page__header">
 			<h1 class="page__title">
 				<?php printf(
-					/* translators: Showing {results number} for {search term} */
-					esc_html__( 'Showing %1$s results for "%2$s"', 'magic-hat' ),
-					'<span class="search-results">' . esc_html( $wp_query->found_posts ) . '</span>',
-					'<span class="search-query">' . get_search_query() . '</span>'
+					/* translators: %s is results number wrapped in a span. */
+					esc_html__( 'Found %s results.', 'magic-hat' ),
+					'<span class="search-number">' . esc_html( $wp_query->found_posts ) . '</span>'
 				); ?>
 			</h1>
+            <h2 class="page__subtitle">
+                <?php printf(
+                    /* translators: %s is the search term. */
+                    esc_html__( '(You searched for %s.)', 'magic-hat' ),
+					'<span class="search-query">' . get_search_query() . '</span>'
+                ); ?>
+            </h2>
 		</header><!-- .page__header -->
 
 		<?php get_search_form(); ?>

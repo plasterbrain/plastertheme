@@ -64,6 +64,8 @@ legend {
 }
 
 textarea {
+	max-width: 100%;
+	min-width: 100%;
 	overflow: auto; // Remove the default vertical scrollbar in IE 10+.
 	width: 100%;
 }
@@ -103,7 +105,7 @@ input[type="submit"] {
 	cursor: pointer;
 	font-size: 0.8rem;
 	line-height: 1;
-	padding: 0.6rem 1rem 0.4rem;
+	padding: 1em;
 	text-decoration: none;
 }
 
@@ -121,6 +123,7 @@ input[type="submit"] {
 	.search-field {
 		border-radius: 0.2rem 0 0 0.2rem;
 		border-right: 0;
+		padding: 0.3em 1em;
 		width: 100%;
 	}
 
