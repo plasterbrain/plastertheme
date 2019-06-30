@@ -20,6 +20,13 @@
 	margin-top: 2rem; // Avoid overlap with breadcrumbs
 }
 
+.page__title {
+	color: #e42196;
+	font-family: Futura;
+	text-shadow: 2px 2px 0 black;
+	text-transform: uppercase;
+}
+
 .page__title-error {
 	font-size: calc(1.5rem + 4vw);
 	padding: 0;
@@ -103,6 +110,14 @@ article[class*="type-"] {
 
 	.entry__meta-header {
 		margin-bottom: 0.5rem;
+	}
+
+	.shariff .theme-color .shariff-icon svg path {
+		fill: black !important;
+	}
+
+	.shariff-link {
+		color: black !important;
 	}
 
 	.entry__thumbnail {
