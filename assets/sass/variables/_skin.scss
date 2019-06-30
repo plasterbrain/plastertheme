@@ -131,20 +131,26 @@ $color__nav-main-link-hover: #ffe100;
 }
 
 /* Hamburger menu button */
-$color__toggle-button: blue;
 
 /* To change the menu icon, edit header.php. The svg is added in the template so
 we can target the fill color for hover styles. */
 .nav-main__toggle {
 	background: none;
+	box-shadow: none;
 	margin: 1rem;
 
+	&:hover,
+	&:focus {
+		background: none;
+		box-shadow: none;
+	}
+
 	svg {
-		fill: $color__toggle-button;
+		fill: #1d7881;
 
 		&:hover,
 		&:focus {
-			fill: lighten($color__toggle-button, 20%);
+			fill: #00ffc9;
 		}
 	}
 }
@@ -155,7 +161,7 @@ we can target the fill color for hover styles. */
 }
 
 .site__container {
-	background: rgba(14, 8, 21, 0.82);
+	background: rgba(6, 11, 24, 0.82);
 }
 
 .post,
