@@ -2,12 +2,80 @@
 /**
  * Custom template tags for this theme
  *
- * Eventually, some of the functionality here could be replaced by core features. Optimism!
+ * Eventually, some of the functionality here could be replaced by core
+ * features. Optimism!
  *
  * @package Magic Hat
  * @subpackage Includes
  * @since 1.0.0
  */
+
+if ( ! function_exists( 'magic_hat_get_archive_title' ) ) :
+/**
+ * Customized version of {@see get_the_archive_title()}.
+ *
+ * @since 1.1.0
+ *
+ * @return string	The appropriate title for the archive.
+ */
+function magic_hat_get_archive_title() {
+    if ( is_category() ) {
+        $title = single_cat_title( '', false );
+    } elseif ( is_tag() ) {
+        /* translators: Tag archive title. %s: Tag name */
+        $title = sprintf( __( 'Tagged #%s', 'magic-hat' ), single_tag_title( '', false ) );
+    } elseif ( is_author() ) {
+        /* translators: Author archive title. %s: Author name */
+        $title = sprintf( __( 'Posts by %s', 'magic-hat' ), '<span class="vcard">' . get_the_author() . '</span>' );
+    } elseif ( is_year() ) {
+        /* translators: Yearly archive title. %s: Year */
+        $title = sprintf( __( '%s Highlights', 'magic-hat' ), get_the_date( _x( 'Y', 'yearly archives date format' ) ) );
+    } elseif ( is_month() ) {
+        /* translators: Monthly archive title. %s: Month name and year */
+        $title = sprintf( __( '%s Archive', 'magic-hat' ), get_the_date( _x( 'F Y', 'monthly archives date format' ) ) );
+    } elseif ( is_day() ) {
+        /* translators: Daily archive title. %s: Date */
+        $title = sprintf( __( 'Posted on %s', 'magic-hat' ), get_the_date( _x( 'F j, Y', 'daily archives date format' ) ) );
+    } elseif ( is_tax( 'post_format' ) ) {
+        if ( is_tax( 'post_format', 'post-format-aside' ) ) {
+            $title = _x( 'Asides', 'post format archive title', 'magic-hat' );
+        } elseif ( is_tax( 'post_format', 'post-format-gallery' ) ) {
+            $title = _x( 'Galleries', 'post format archive title', 'magic-hat' );
+        } elseif ( is_tax( 'post_format', 'post-format-image' ) ) {
+            $title = _x( 'Images', 'post format archive title', 'magic-hat' );
+        } elseif ( is_tax( 'post_format', 'post-format-video' ) ) {
+            $title = _x( 'Videos', 'post format archive title', 'magic-hat' );
+        } elseif ( is_tax( 'post_format', 'post-format-quote' ) ) {
+            $title = _x( 'Quotes', 'post format archive title', 'magic-hat' );
+        } elseif ( is_tax( 'post_format', 'post-format-link' ) ) {
+            $title = _x( 'Links', 'post format archive title', 'magic-hat' );
+        } elseif ( is_tax( 'post_format', 'post-format-status' ) ) {
+            $title = _x( 'Statuses', 'post format archive title', 'magic-hat' );
+        } elseif ( is_tax( 'post_format', 'post-format-audio' ) ) {
+            $title = _x( 'Audio', 'post format archive title', 'magic-hat' );
+        } elseif ( is_tax( 'post_format', 'post-format-chat' ) ) {
+            $title = _x( 'Chats', 'post format archive title', 'magic-hat' );
+        }
+    } elseif ( is_post_type_archive() ) {
+        $title = post_type_archive_title( '', false );
+    } elseif ( is_tax() ) {
+        $tax = get_taxonomy( get_queried_object()->taxonomy );
+        /* translators: Taxonomy term archive title. 1: Taxonomy singular name, 2: Current taxonomy term */
+        $title = sprintf( __( '%1$s: %2$s', 'magic-hat' ), $tax->labels->singular_name, single_term_title( '', false ) );
+    } else {
+        $title = __( 'Archives', 'magic-hat' );
+    }
+
+    /**
+     * Filters the archive title.
+     *
+     * @since 4.1.0
+     *
+     * @param string $title Archive title to be displayed.
+     */
+    return apply_filters( 'get_the_archive_title', $title );
+}
+endif;
 
 if ( ! function_exists( 'magic_hat_get_post_template' ) ) :
 /**
@@ -27,14 +95,15 @@ endif;
 
 if ( ! function_exists( 'magic_hat_entry_header' ) ) :
 /**
- * Prints the post title wrapped in the appropriate heading/link tags depending on whether
- * the current view is in an archive or a singular context.
+ * Prints the post title wrapped in the appropriate heading/link tags depending
+ * on whether the current view is in an archive or a singular context.
  *
  * @since 1.0.0
  *
- * @param string $title		The title to wrap in tags. Default is post title returned by
- * 							{@see get_the_title}.
- * @param int $id			The ID of the post to use in ID attributes. Default get_the_ID().
+ * @param string $title		The title to wrap in tags. Default is post title
+ * 							returned by {@see get_the_title}.
+ * @param int $id			The ID of the post to use in ID attributes. Default
+ * 							get_the_ID().
  */
 function magic_hat_entry_header( $title = null, $id = null ) {
 	if ( is_front_page() && get_option( 'show_on_front' ) == 'page' ) {
@@ -72,53 +141,68 @@ if ( ! function_exists( 'magic_hat_get_entry_meta' ) ) :
 /**
  * Prints HTML with meta information for the current post-date/time.
  *
- * @return string	HTML output with post date and optionally comment number, permalink,
- * 					and category.
+ * @return string	HTML output with post date and optionally comment number,
+ * 					permalink, and category.
  */
 function magic_hat_get_entry_meta() {
-	$posted = sprintf( '<time datetime="%1$s">%2$s</time>',
-		esc_attr( get_the_date( DATE_W3C ) ),
-		esc_html( get_the_date() )
-	);
+    $post_type = get_post_type();
+    if ( $post_type === 'event' ) {
+        if ( function_exists( 'event_mouse_first_date' ) ) {
+            $output = event_mouse_first_date( array(
+                'show_time' => true,
+                'tag' => 'span',
+                'class' => 'meta meta-caldate',
+                'echo' => false,
+            ) );
+        }
+		$output .= '
+		<span class="meta meta-location">' . rwmb_meta( 'location_name' ) . '</span>';
+    } else {
+    	$posted = sprintf( '<time datetime="%1$s">%2$s</time>',
+    		esc_attr( get_the_date( DATE_W3C ) ),
+    		esc_html( get_the_date() )
+    	);
 
-	$updated = false;
-	if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
-		$updated = sprintf(
-			'<time datetime="%1$s">%2$s</time>',
-			esc_attr( get_the_modified_date( DATE_W3C ) ),
-			esc_html( get_the_modified_date() )
-		);
-	}
+    	$updated = false;
+    	if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
+    		$updated = sprintf(
+    			'<time datetime="%1$s">%2$s</time>',
+    			esc_attr( get_the_modified_date( DATE_W3C ) ),
+    			esc_html( get_the_modified_date() )
+    		);
+    	}
 
-	$output = '<div class="meta meta-date">
-    <span class="meta-date-posted">' . $posted . '<br /></span>';
+    	$output = '<div class="meta meta-date">
+        <span class="meta-date-posted">' . $posted . '<br /></span>';
 
-	/*
-	if ( is_single() && $updated ) {
-		// translators: %s: post date.
-		$output .= '<span class="meta-date-updated">' . sprintf( esc_html__( 'Updated: %s', 'magic-hat' ), $updated ) . '</span>';
-	}
-	*/
+    	/*
+    	// Last modified date
+    	if ( is_single() && $updated ) {
+    		// translators: %s: post date.
+    		$output .= '<span class="meta-date-updated">' . sprintf( esc_html__( 'Updated: %s', 'magic-hat' ), $updated ) . '</span>';
+    	}
+    	*/
 
-    $output .= '</div>';
+        $output .= '</div>';
 
-	if ( get_post_type() === 'game' ) {
-		if ( function_exists( 'gm_devs' ) ) {
-			$output .= '
-			<span class="meta meta-dev">' . gm_devs( false ) . '</span>';
-		}
-		if ( function_exists( 'gm_engine' ) ) {
-			$output .= '
-			<span class="meta meta-engine">' . esc_html__( 'Engine:', 'magic-hat' ) . gm_engine( false ) . '</span>';
-		}
-	}
-
-	if ( ! is_singular() ) {
-		$category = get_the_category();
-		if ( ! empty( $category ) ) {
-			$output .= '<span class="meta meta-category"><a href="' . get_category_link( $category[0]->term_id ) . '">' . $category[0]->name . '</a></span>';
-		}
-	}
+    	if ( $post_type === 'game' ) {
+    		if ( function_exists( 'gm_devs' ) ) {
+    			$output .= '
+    			<span class="meta meta-dev">' . gm_devs( false ) . '</span>';
+    		}
+    		if ( function_exists( 'gm_engine' ) ) {
+    			$output .= '
+    			<span class="meta meta-engine">' . esc_html__( 'Engine:', 'magic-hat' ) . gm_engine( false ) . '</span>';
+    		}
+    	} else {
+        	if ( ! is_singular() ) {
+        		$category = get_the_category();
+        		if ( ! empty( $category ) ) {
+        			$output .= '<span class="meta meta-category"><a href="' . get_category_link( $category[0]->term_id ) . '">' . $category[0]->name . '</a></span>';
+        		}
+        	}
+        }
+    }
 
 	$permalink = get_permalink();
 
@@ -152,9 +236,10 @@ endif;
 
 if ( ! function_exists( 'magic_hat_sticky_ribbon' ) ) :
 /**
- * Prints the markup for a corner ribbon that says "Featured" on sticky posts. If you
- * remove this element without replacing it with some form of visual sticky post
- * distinction, remember to remove "sticky-posts" from the theme tags in style.css.
+ * Prints the markup for a corner ribbon that says "Featured" on sticky posts.
+ * If you remove this element without replacing it with some form of visual
+ * sticky post distinction, remember to remove "sticky-posts" from the theme
+ * tags in style.css.
  *
  * @since 1.0.0
  */
@@ -195,7 +280,13 @@ function magic_hat_entry_footer() {
 		if ( $tag_list ) {
 			echo '<p class="meta meta-tags">' . $tag_list . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
-	}
+	} else if ( $type === 'event' ) {
+        if ( function_exists( 'event_mouse_get_google_link' ) ) {
+            ?>
+            <a class="meta meta-googlecal" href="<?php echo event_mouse_get_google_link(); ?>"><?php esc_html_e( 'Add to Google Calendar' ); ?></a>
+            <?php
+        }
+    }
 
 	edit_post_link(
 		sprintf(
