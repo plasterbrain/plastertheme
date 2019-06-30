@@ -104,6 +104,21 @@
 	.swipebox-arrows {
 		width: 500px;
 	}
+
+	.site__footer {
+		clear: both;
+		margin: 0 auto;
+
+		.footer__info {
+			flex: 0 0 $size__footer-title-width;
+		}
+
+		.footer__widget {
+			display: flex;
+			flex: 0 0 (100% - $size__footer-title-width);
+			justify-content: flex-end;
+		}
+	}
 }
 
 @media screen and (min-width: 690px) {
@@ -194,21 +209,6 @@
 
 		.sidebar-left {
 			order: -1;
-		}
-	}
-
-	.site__footer {
-		clear: both;
-		margin: 0 auto;
-
-		.footer__info {
-			flex: 0 0 $size__footer-title-width;
-		}
-
-		.footer__widget {
-			display: flex;
-			flex: 0 0 (100% - $size__footer-title-width);
-			justify-content: flex-end;
 		}
 	}
 }
