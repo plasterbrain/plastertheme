@@ -46,8 +46,8 @@ global $wp_query;
 			<h1 class="page__title">
 				<?php printf(
 					/* translators: %s is the search term. */
-					esc_html__( 'No results found for "%s"', 'magic-hat' ),
-					'<span class="search-results">' . esc_html( $wp_query->found_posts ) . '</span>'
+					esc_html__( 'No results found for %s', 'magic-hat' ),
+					'<span class="search-query">' . get_search_query() . '</span>'
 				); ?>
 			</h1>
 		</header><!-- .page__header -->
