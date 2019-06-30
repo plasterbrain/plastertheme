@@ -30,8 +30,9 @@ function magic_hat_auto_title( $post_id, $post ) {
 
 		$post_format = get_post_format( $post );
 		/**
-		 * Filters the post title which gets automatically added to quotes, status posts,
-		 * and asides. The default title is the first fifty characters of the content.
+		 * Filters the post title which gets automatically added to quotes,
+		 * status posts, and asides. The default title is the first fifty
+		 * characters of the content.
 		 *
 		 * @since 1.0.0
 		 *
