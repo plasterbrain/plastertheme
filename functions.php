@@ -29,22 +29,32 @@ require $magic_hat_directory . '/inc/media-functions.php';
 require $magic_hat_directory . '/inc/comment-functions.php';
 
 /**
- * Customizer additions. Remove this line to remove theme options and customizer support.
+ * Customizations for the login page. Remove if you want the generic Wordpress
+ * login page back or if you're using a plugin to customize it.
+ */
+require $magic_hat_directory . '/inc/login.php';
+
+/**
+ * Customizer additions. Remove this line to remove theme options and
+ * customizer support.
  */
 include $magic_hat_directory . '/inc/customizer.php';
 
 /**
- * Breadcrumb plug-in by Justin Tadlock. Remove this line to disable breadcrumbs.
+ * Breadcrumb plug-in by Justin Tadlock. Remove this line to disable
+ * breadcrumbs.
  */
 include $magic_hat_directory . '/inc/class-breadcrumb-trail.php';
 
 /**
- * Post Format support. Remove this line to remove all post format functionality.
+ * Post Format support. Remove this line to remove all post format
+ * functionality.
  */
 include $magic_hat_directory . '/inc/post-formats.php';
 
 /**
- * Plugin support. Remove this line to remove support for Jetpack, WooCommerce and Soil.
+ * Plugin support. Remove this line to remove support for Jetpack, WooCommerce
+ * and Soil.
  */
 include $magic_hat_directory . '/inc/plugins.php';
 
