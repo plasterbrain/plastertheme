@@ -1,15 +1,31 @@
 <?php
 /**
- * Customizations for wp-login.php
+ * Login Functions
  *
+ * Functions which customize the appearance and behavior of wp-login.php.
+ *
+ * @package Magic Hat
+ * @subpackage Includes
  * @since 1.1.0
  */
 
+/**
+ * Removes the shaking animation when there is an error.
+ *
+ * @since 1.1.0
+ */
 add_action( 'login_head', function() {
     remove_action( 'login_head', 'wp_shake_js', 12 );
 } );
 
 if ( ! function_exists( 'magic_hat_login_logo' ) ) :
+/**
+ * Prints styles to the header, enqueues the site's styles and dequeues the
+ * built-in login stylesheet in order to replace the WordPress logo on the
+ * login page with the site's custom logo, if one exists.
+ *
+ * @since 1.1.0
+ */
 function magic_hat_login_logo() {
     $style = is_rtl() ? '/assets/css/style-rtl.min.css' : '/assets/css/style.min.css';
     wp_enqueue_style( 'magic-hat-style', get_template_directory_uri() . $style, array(), null );
@@ -76,18 +92,42 @@ function magic_hat_login_logo() {
 endif;
 add_action( 'login_enqueue_scripts', 'magic_hat_login_logo' );
 
+/**
+ * Replaces the alt text of the login page logo with the site name.
+ *
+ * @since 1.1.0
+ */
 add_filter( 'login_headertext', function() {
     return get_bloginfo( 'name' );
 } );
 
+/**
+ * Replaces the link of the login page logo to the home page.
+ *
+ * @since 1.1.0
+ */
 add_filter( 'login_headerurl', function() {
     return esc_url( get_bloginfo( 'url' ) );
 } );
 
+/**
+ * Adds a message above the login form.
+ *
+ * @since 1.1.0
+ */
 add_filter( 'login_message', function() {
     return _e( "This might be the door you're looking for.", 'magic-hat' );
 } );
 
+/**
+ * Replaces specific login errors with more generic ones for security.
+ *
+ * @since 1.1.0
+ *
+ * @global WP_Error $errors     The login form WP_Error object.
+ * @param string $error         The error to display above the form.
+ * @return string               The new error to display.
+ */
 add_filter( 'login_errors', function( $error ) {
     global $errors;
     $err_codes = $errors->get_error_codes();
