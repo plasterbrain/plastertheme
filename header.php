@@ -11,7 +11,7 @@
  * contains script to handle tab focus for "skip content" links.
  *
  * @package Magic Hat
- * @since 1.0.0f
+ * @since 1.0.0
  */
 
 $magic_hat_body_class = array(
