@@ -1,10 +1,8 @@
 <?php
 /**
- * Magic Hat Bootstrap File
+ * Plastertheme Bootstrap File
  *
- * Wow, this is where all the magic happens! To make your own theme based on Magic Hat,
- * find and replace of all instances of 'magic_hat' and 'magic-hat', including in the
- * javascript files. Or don't, and just call it Magic Hat again! :D
+ * Where the magic happens...
  *
  * @package Magic Hat
  * @since 1.0.0
@@ -31,8 +29,10 @@ require $magic_hat_directory . '/inc/comment-functions.php';
 /**
  * Customizations for the login page. Remove if you want the generic Wordpress
  * login page back or if you're using a plugin to customize it.
+ *
+ * @since 1.0.0
  */
-require $magic_hat_directory . '/inc/login.php';
+require $magic_hat_directory . '/inc/login-functions.php';
 
 /**
  * Customizer additions. Remove this line to remove theme options and
