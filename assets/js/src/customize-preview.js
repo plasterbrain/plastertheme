@@ -37,7 +37,7 @@
 	});
 	wp.customize( 'copyright', function( value ) {
 		value.bind( function( to ) {
-			$( '.copyright' ).text( to );
+			$( '.legal-copyright' ).text( to );
 		});
 	});
 

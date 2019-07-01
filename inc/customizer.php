@@ -200,7 +200,6 @@ function magic_hat_customize_register( $wp_customize ) {
 	$wp_customize->add_setting( 'show-credits', array(
 		'default' => 1,
 		'sanitize_callback' => 'magic_hat_sanitize_toggle',
-		'transport' => 'postMessage',
 	) );
 
 	$wp_customize->add_control( new Magic_Hat_Customize_Toggle_Control( $wp_customize, 'show-credits', array(
@@ -361,7 +360,7 @@ function magic_hat_customize_register( $wp_customize ) {
 			'render_callback' => 'magic_hat_customize_partial_reply',
 		) );
 		$wp_customize->selective_refresh->add_partial( 'copyright', array(
-			'selector'        => '.copyright',
+			'selector'        => '.legal-copyright',
 			'render_callback' => 'magic_hat_customize_partial_copyright',
 		) );
 	}
