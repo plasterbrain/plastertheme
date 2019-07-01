@@ -28,8 +28,11 @@ body {
 	flex-direction: column;
 	height: 100vh;
 
-	.site__content {
+	.site__container {
 		flex: 1;
+	}
+
+	.site__content {
 		margin: 0 auto;
 		max-width: 1200px;
 

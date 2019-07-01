@@ -210,16 +210,25 @@ article[class*="type-"] {
 
 .page-template-page-plaincontent {
 	.site__content {
-		flex: 0 0 100%;
-	}
+		height: 100%;
 
-	.entry__title,
-	.nav-breadcrumbs {
-		display: none;
-	}
+		.entry__title,
+		.nav-breadcrumbs {
+			display: none;
+		}
 
-	article {
-		background: none;
+		article[class*="type-"],
+		.post {
+			background: none;
+			box-shadow: none;
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+
+			.entry__content {
+				flex: 1;
+			}
+		}
 	}
 }
 

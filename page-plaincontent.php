@@ -7,7 +7,7 @@
 * @since 1.0.1
 */
 
-get_header();
+get_header( 'min' );
 ?>
 
 	<?php while ( have_posts() ) { ?>
