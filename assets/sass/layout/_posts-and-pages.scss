@@ -2,7 +2,7 @@
  * Posts & Pages
  *
  * Description: Styles related to post display in archives and singular views.
- * Version: 1.0.0
+ * Version: 1.1.0
  * License: GPL 3.0 or later
  */
 
@@ -20,20 +20,7 @@
 	margin-top: 2rem; // Avoid overlap with breadcrumbs
 }
 
-.page__title {
-	color: #e42196;
-	font-family: Futura;
-	text-shadow: 2px 2px 0 black;
-	text-transform: uppercase;
-}
-
-.page__title-error {
-	font-size: calc(1.5rem + 4vw);
-	padding: 0;
-}
-
 .page__subtitle {
-	font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 	font-size: 1rem;
 	margin-bottom: 1rem;
 	margin-top: -1rem;
@@ -86,12 +73,6 @@ article[class*="type-"] {
 			margin: 0;
 		}
 
-		.meta-date {
-			&::before {
-				content: "日付";
-			}
-		}
-
 		.meta-date-updated {
 			display: block;
 			font-size: 0.8em;
@@ -112,14 +93,6 @@ article[class*="type-"] {
 		margin-bottom: 0.5rem;
 	}
 
-	.shariff .theme-color .shariff-icon svg path {
-		fill: black !important;
-	}
-
-	.shariff-link {
-		color: black !important;
-	}
-
 	.entry__thumbnail {
 		display: flex;
 		margin: #{-$size__post-padding} #{-$size__post-padding} 0; // Negative margin to accomodate post padding
@@ -132,46 +105,18 @@ article[class*="type-"] {
 	}
 
 	.sticky-ribbon {
-		height: 90px;
-		overflow: hidden;
 		position: absolute;
-		right: -10px;
-		top: -9px;
-		width: 90px;
+		right: -0.3rem;
+		top: 1rem;
+		width: 100px;
+		text-align: center;
 
-		span {
-			font-size: 0.9rem;
+		&::after {
+			content: "";
 			position: absolute;
-			right: -21px;
-			text-align: center;
-			transform: rotate(45deg);
-			top: 19px;
-			width: 110px;
-
-			&::before {
-				border-bottom: 3px solid transparent;
-				border-left: 3px solid #808080;
-				border-right: 3px solid transparent;
-				border-top: 3px solid #808080;
-				content: "";
-				position: absolute;
-				left: 0;
-				top: 100%;
-				z-index: -1;
-			}
-
-			&::after {
-				border-bottom: 3px solid transparent;
-				border-left: 3px solid transparent;
-				border-right: 3px solid #808080;
-				border-top: 3px solid #808080;
-				content: "";
-				position: absolute;
-				right: 0;
-				top: 100%;
-				z-index: -1;
-			}
-
+			right: 0;
+			top: 100%;
+			z-index: -1;
 		}
 	}
 }
@@ -238,47 +183,6 @@ article[class*="type-"] {
 
 //* ==== Comments ==== *//
 
-.page__title-error,
-.comments__title,
-.comment-reply-title,
-.trackback-url__title {
-	&::after {
-		color: #497760;
-		display: block;
-		font-size: 0.4em;
-		font-weight: 100;
-		text-shadow: none;
-	}
-}
-
-.comments__title,
-.page__title-error {
-	color: #fff;
-	text-shadow: 0.03em 0.03em 0 #195c46, -0.02em -0.02em 0 #d100c0b3, 0.06em 0.03em 0 #3108ffa3, -0.03em -0.03em 0 #000000a6;
-	text-transform: uppercase;
-}
-
-.comments__title {
-	&::after {
-		content: "コメント";
-	}
-}
-
-.page__title-error {
-	&::after {
-		content: "エラー! 見つかりません!";
-		margin: -0.2em 0 0.5em;
-	}
-}
-
-.trackback-url__title::after {
-	content: "トラックバック";
-}
-
-.comment-reply-title::after {
-	content: "コメントの投稿";
-}
-
 .comments__status {
 	margin: 0;
 }
@@ -300,21 +204,7 @@ article[class*="type-"] {
 	margin-bottom: 1rem;
 
 	.comment__body {
-		padding: 1rem; // Padding on article to avoid stacking in comment threads
-	}
-}
-
-.comment-form-comment__title {
-	font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-	font-size: 1em;
-	font-weight: 400;
-
-	&::after {
-		color: #354648;
-		content: "本文";
-		font-size: 0.8em;
-		font-weight: 500;
-		margin-left: 0.4em;
+		padding: 1rem; // Avoid stacking in comment threads
 	}
 }
 

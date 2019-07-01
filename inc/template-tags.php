@@ -245,7 +245,7 @@ if ( ! function_exists( 'magic_hat_sticky_ribbon' ) ) :
  */
 function magic_hat_sticky_ribbon() {
 	if ( is_sticky() ) { ?>
-		<div class="sticky-ribbon"><span><?php esc_html_e( 'Featured', 'magic-hat' ); ?></span></div>
+		<div class="sticky-ribbon"><?php esc_html_e( 'Featured', 'magic-hat' ); ?></div>
 	<?php }
 }
 endif;

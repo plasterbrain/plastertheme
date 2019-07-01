@@ -2,7 +2,7 @@
  * Menus
  *
  * Description: Styles for nav menus.
- * Version: 1.0.0
+ * Version: 1.1.0
  * License: GPL 3.0 or later
  */
 
@@ -43,7 +43,6 @@ $size__nav-spacing: 1;
 }
 
 .nav-top {
-	background: rgba(#000, 0.8);
 	position: fixed;
 	width: 100%;
 	z-index: 99;
@@ -123,8 +122,9 @@ $size__nav-spacing: 1;
 .nav-breadcrumbs {
 	.nav-breadcrumbs__item {
 
-		/* .nav-breadcrumbs__item-first and .nav-breadcrumbs__item-last can be used
-		to target the first and last items in the breadcrumb trail, respectively. */
+		/* .nav-breadcrumbs__item-first and .nav-breadcrumbs__item-last can be
+		used to target the first and last items in the breadcrumb trail,
+		respectively. */
 		align-items: center;
 		display: flex; // Display flex with the separator.
 
@@ -151,42 +151,6 @@ $size__nav-spacing: 1;
 			margin: 0;
 		}
 	}
-
-	.adjacent-item-prev {
-		text-align: left;
-
-		.adjacent-item__heading::after {
-			color: #497760;
-			content: "前の記事";
-			display: block;
-			font-size: 0.8em;
-			font-weight: 200;
-		}
-
-		.adjacent-item__title::before {
-			content: "\2770"/*rtl:""*/;
-			margin-right: 0.5rem/*rtl:0*/;
-		}
-
-		.adjacent-item__title::after {
-			content: ""/*rtl:"\2771"*/;
-			margin-left: 0/*rtl:.5rem*/;
-		}
-	}
-
-	.adjacent-item-next {
-		text-align: right;
-
-		.adjacent-item__title::before {
-			content: ""/*rtl:"\2770"*/;
-			margin-right: 0/*rtl:.5rem*/;
-		}
-
-		.adjacent-item__title::after {
-			content: "\2771"/*rtl:""*/;
-			margin-left: 0.5rem/*rtl:0*/;
-		}
-	}
 }
 
 .nav-posts,
@@ -197,24 +161,6 @@ $size__nav-spacing: 1;
 	span {
 		&:not(:last-child) {
 			margin-right: 0.5em;
-		}
-	}
-}
-
-.nav-post {
-	.post-page-prev {
-		a::before {
-			content: "\003C";
-			font-size: 0.8em;
-			margin-right: 0.5em;
-		}
-	}
-
-	.post-page-next {
-		a::after {
-			content: "\003E";
-			font-size: 0.8em;
-			margin-left: 0.5em;
 		}
 	}
 }
