@@ -11,3 +11,4 @@ Ssee LICENSE for third-party libraries used.
 ### 1.1.0
 - New file to dramatically alter the default wp-login page
 - Style updates
+- Plaincontent template added
