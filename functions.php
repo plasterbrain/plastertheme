@@ -72,40 +72,6 @@ function magic_hat_setup() {
 	add_theme_support( 'post-thumbnails' );
 	add_theme_support( 'html5', array( 'caption', 'comment-form', 'comment-list', 'gallery', 'search-form', ) );
 
-	/*
-	Add starter content to better show off your theme in the Customizer.
-	https://make.wordpress.org/core/2016/11/30/starter-content-for-themes-in-4-7/
-	add_theme_support( 'starter-content', array() );
-	*/
-
-	/*
-	Gutenberg
-	https://wordpress.org/gutenberg/handbook/designers-developers/developers/themes/theme-support/
-	*/
-	add_theme_support( 'align-wide' );
-	add_theme_support( 'responsive-embeds' );
-
-	/*
-	Add editor styles
-	add_theme_support( 'editor-styles' );
-	add_theme_support( 'dark-editor-style' );
-	*/
-
-	/*
-	Add font size presets for the block editor.
-	add_theme_support( 'disable-custom-font-sizes' );
-	add_theme_support( 'editor-font-sizes', array(
-		array(
-			'name' => __( 'Small', 'themeLangDomain' ),
-			'size' => 12,
-			'slug' => 'small'
-		),
-	) );
-	*/
-
-	//add_theme_support( 'disable-custom-colors' );
-	add_theme_support( 'editor-color-palette', array() );
-
 	register_nav_menus( array(
 		'menu-main' => esc_html__( 'Main Menu', 'magic-hat' ),
 		'menu-top' => esc_html__( 'Topbar Menu', 'magic-hat' ),
