@@ -13,7 +13,7 @@ get_header();
 ?>
 
 	<header class="page__header">
-		<h1 class="page__title"><?php echo magic_hat_get_archive_title(); ?></h1>
+		<h1 class="page__title"><?php echo magic_hat_get_archive_title(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></h1>
 		<div class="page__desc"><?php echo wp_kses_post( get_the_archive_description() ); ?></div>
 		<?php if ( is_year() ) { ?>
 			<nav class="nav-menu nav-desktop-h" aria-label="<?php esc_html_e( 'Browse posts by month' ); ?>">
