@@ -11,9 +11,9 @@
 
 if ( ! function_exists( 'magic_hat_auto_title' ) ) :
 /**
- * Adds a title if a post is saved without one. By default the function will try to use
- * an excerpt up to 50 characters of the post content as the title, but if this is also
- * empty, the post title will be set to "Post {$id}".
+ * Adds a title if a post is saved without one. By default the function will
+ * try to use an excerpt up to 50 characters of the post content as the title,
+ * but if this is also empty, the post title will be set to "Post {$id}".
  *
  * @since 1.0.0
  *
@@ -126,8 +126,8 @@ add_filter( 'term_links-post_tag', 'magic_hat_term_links_tags' );
 add_filter( 'term_links-game_tag', 'magic_hat_term_links_tags' );
 
 /**
- * Filters the string that gets added to excerpts before the <!-- more --> tag, which
- * is '[...]' by default. This returns an ellipsis without brackets.
+ * Filters the string that gets added to excerpts before the <!-- more --> tag,
+ * which is '[...]' by default. This returns an ellipsis without brackets.
  *
  * @since 1.0.0
  *

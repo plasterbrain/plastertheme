@@ -31,7 +31,8 @@ function magic_hat_customize_control_css() {
 add_action( 'customize_controls_init', 'magic_hat_customize_control_css' );
 
 /**
- * Binds JS handlers to make the Customizer preview reload changes asynchronously.
+ * Binds JS handlers to make the Customizer preview reload changes
+ * asynchronously.
  *
  * @since 1.0.0
  */
@@ -126,7 +127,8 @@ function magic_hat_custom_bg() {
 }
 
 /**
- * Registers and adjusts the Customizer settings, controls, and sections for the theme.
+ * Registers and adjusts the Customizer settings, controls, and sections for
+ * the theme.
  *
  * @since 1.0.0
  *
@@ -290,7 +292,8 @@ function magic_hat_customize_register( $wp_customize ) {
 		'section' => 'static_front_page',
 	) ) );
 
-	/* Dummy setting used to relay the active_callback state to postMessage settings */
+	/* Dummy setting used to relay the active_callback state to postMessage
+	settings */
 	$wp_customize->add_setting( 'has-comments', array() );
 
 	$wp_customize->add_control( 'has-comments', array(
@@ -419,9 +422,9 @@ function magic_hat_customize_partial_blogdescription() {
  * @version 1.0.5
  * @link https://github.com/maddisondesigns
  *
- * @param string $input																			The value to check.
+ * @param string $input										The value to check.
  * @param Magic_Hat_Customize_Image_Radio_Control $setting	Setting object.
- * @return string																						Sanitized value.
+ * @return string											Sanitized value.
  */
 function magic_hat_sanitize_image_radio( $input, $setting ) {
 	$choices = $setting->manager->get_control( $setting->id )->choices;
@@ -435,7 +438,7 @@ function magic_hat_sanitize_image_radio( $input, $setting ) {
 /**
  * Sanitizes the value of a toggle control.
  *
- * @param bool $input	The toggle value to sanitize and save as a theme setting.
+ * @param bool $input	The toggle value to sanitize and save as a setting.
  * @return int			1 for on, 0 for off.
  */
 function magic_hat_sanitize_toggle( $input ) {

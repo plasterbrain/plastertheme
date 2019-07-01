@@ -1,9 +1,9 @@
 <?php
 /**
  * Media Functions
- * 
+ *
  * Functions used to control the display of media and embedded content.
- * 
+ *
  * @package Magic Hat
  * @subpackage Includes
  * @since 1.0.0
@@ -11,9 +11,9 @@
 
 if ( ! function_exists( 'magic_hat_enqueue_media_scripts' ) ) :
 /**
- * Registers, localizes, and enqueues scripts and styles related to lightboxes and other
- * media functionality.
- * 
+ * Registers, localizes, and enqueues scripts and styles related to lightboxes
+ * and other media functionality.
+ *
  * @since 1.0.0
  */
 function magic_hat_enqueue_media_scripts() {
@@ -35,13 +35,13 @@ add_action( 'wp_enqueue_scripts', 'magic_hat_enqueue_media_scripts' );
 
 if ( ! function_exists( 'magic_hat_calculate_image_sizes' ) ) :
 /**
- * Generates a value for an image's 'sizes' attribute based on the size of the image, which
- * is determined by the array of size names passed to the function.
- * 
- * @param array $output			The value of the attribute which gets filtered here.
- * @param string|array $size 	The max image size, either an array (width, height) or the
- * 								name of the size as a string.
- * @return string				Filtered value for use in an image's 'sizes' attribute.
+ * Generates a value for an image's 'sizes' attribute based on the size of the
+ * image, which is determined by the array of size names passed to the function.
+ *
+ * @param array $output			The value of the attribute being filtered.
+ * @param string|array $size 	The max image size, either an array (width,
+ * 								height) or the size name as a string.
+ * @return string				Filtered value for image's 'sizes' attribute.
  */
 function magic_hat_calculate_image_sizes( $output, $size ) {
 	$medium = '(max-width: 400px) 300px';
@@ -50,11 +50,12 @@ function magic_hat_calculate_image_sizes( $output, $size ) {
 		$medium_large = '(min-width: 401px) 768px';
 		$large = '(min-width: 930px) 1024px';
 	} else {
-		/* Adjust width based on sidebar placement (on small screens it goes underneath) */
+		/* Adjust width based on sidebar placement (on small screens it goes
+		underneath) */
 		$medium_large = '(min-width: 401px) and (max-width: 870px) 768px';
 		$large = '(min-width: 930px) and (max-width: 1250px) 768px, (min-width: 871px) and (max-width: 929px) 1024px, 1024px';
 	}
-	
+
 	if ( is_array( $size ) ) {
 		$size = absint( $size[0] );
 	}
@@ -77,12 +78,12 @@ endif;
 add_filter( 'wp_calculate_image_sizes', 'magic_hat_calculate_image_sizes', 10, 2 );
 
 /**
- * Adds the classes 'entry-embed-{$provider}' and 'entry-embed-{$type}' to oEmbed containers.
- * This function is only run the first time the content is fetched, so it won't apply to any
- * cached oEmbed content.
- * 
+ * Adds the classes 'entry-embed-{$provider}' and 'entry-embed-{$type}' to
+ * oEmbed containers. This function is only run the first time the content is
+ * fetched, so it won't apply to any cached oEmbed content.
+ *
  * @since 1.0.0
- * 
+ *
  * @param string $return    The HTML for the embedded element.
  * @param object $data      The oEmbed JSON/XML response body object.
  * @return string           The HTML with the new classes.
@@ -103,13 +104,15 @@ function magic_hat_oembed_parse( $return, $data ) {
 add_filter( 'oembed_dataparse', 'magic_hat_oembed_parse', 0, 2 );
 
 /**
- * Adds a generic 'entry-embed' class to embedded content containers that don't already
- * have a class that matches the 'entry-embed-{$provider}'/'entry-embed-{$type}' format.
- * 
+ * Adds a generic 'entry-embed' class to embedded content containers that don't
+ * already have a class that matches the 'entry-embed-{$provider}'/'entry-embed
+ * {$type}' format.
+ *
  * @since 1.0.0
- * 
+ *
  * @param string $cache     The cached HTML for the embedded content.
- * @return string           The cached HTML, possibly wrapped in a div with the new class.
+ * @return string           The cached HTML, possibly wrapped in a div with the
+ * 							new class.
  */
 function magic_hat_oembed_wrap( $cache ) {
 	if ( strpos( $cache, 'class="entry-embed' ) === false ) {
@@ -121,13 +124,13 @@ add_filter( 'embed_oembed_html', 'magic_hat_oembed_wrap' );
 
 /**
  * Returns HTML5 markup for a gallery.
- * 
+ *
  * @since 1.0.0
- * 
+ *
  * @param array $images {
  * 		The array of images to use, which should include:
- * 		@type int $ID			Image attachment ID. The key is capitalized to match Meta
- * 								Box's formatting.
+ * 		@type int $ID			Image attachment ID. The key is capitalized to
+ * 								match Meta Box's formatting.
  * 		@type string $url 		Image source URL.
  * 		@type int $width		Width of the image in pixels.
  * 		@type int $height		Height of the image in pixels.
@@ -137,11 +140,13 @@ add_filter( 'embed_oembed_html', 'magic_hat_oembed_wrap' );
  * @param array $atts {
  * 		Arguments for the gallery as a whole.
  * 		@type int|string $id	Gallery ID.
- * 		@type string $class 	List of classes to add to the gallery, separated by a space.
- * 								'gallery' is added to the start of the list automatically.
- * 		@type string $link		What the images should link to. Accepts 'file', 'none', and an
- * 								empty string if you want to link to attachment pages. That's
- * 								WP's genius idea, by the way, not mine.
+ * 		@type string $class 	List of classes to add to the gallery,
+ * 								separated by a space. 'gallery' is added to the
+ * 								start of the list automatically.
+ * 		@type string $link		What the images should link to. Accepts 'file',
+ * 								'none', or an empty string if you want to link
+ * 								to attachment pages. That's WP's genius idea,
+ * 								by the way, not mine.
  * }
  * @return string	            The gallery HTML markup.
  */
@@ -197,15 +202,16 @@ function magic_hat_get_gallery( $images, $atts ) {
 }
 
 /**
- * Directs the native {@see gallery_shortcode} through {@see magic_hat_get_gallery} so that
- * native both native WordPress galleries and those created using post format meta have the
- * same format.
- * 
- * A photography theme might benefit from adding {@see wp_get_attachment_metadata}, which
- * returns detailed image metadata such as shutter speed, aperture, ISO, etc.
- * 
+ * Directs the native {@see gallery_shortcode} through {@see
+ * magic_hat_get_gallery} so that native both native WordPress galleries and
+ * those created using post format meta have the same format.
+ *
+ * A photography theme might benefit from adding {@see
+ * wp_get_attachment_metadata}, which returns detailed image metadata such as
+ * shutter speed, aperture, ISO, etc.
+ *
  * @since 1.0.0
- * 
+ *
  * @param string $output    Gallery shortcode output.
  * @param array $atts       Gallery shortcode attributes.
  * @return string	        The new HTML gallery output.
@@ -242,8 +248,8 @@ function magic_hat_post_gallery( $output, $atts ) {
 			$attachments[ $val->ID ] = $_attachments[ $key ];
 		}
 	} else {
-		/* Shortcode is hand-crafted and the user wants all attachments of given post,
-		with possible exclusions */
+		/* Shortcode is hand-crafted and the user wants all attachments of
+		given post, with possible exclusions */
 		$attachments = get_children( array(
 			'post_parent'    => intval( $atts['id'] ),
 			'exclude'        => $atts['exclude'],
@@ -285,12 +291,13 @@ function magic_hat_post_gallery( $output, $atts ) {
 add_filter( 'post_gallery', 'magic_hat_post_gallery', 10, 2 );
 
 /**
- * Adds a title and rel attribute to anchor elements if an image is linked to its source file.
- * This is so {@see magic_hat_caption_shortcode} can turn it into a lightbox as appropriate.
- * {@see image_send_to_editor} for a description of the parameters.
- * 
+ * Adds a title and rel attribute to anchor elements if an image is linked to
+ * its source file. This is so {@see magic_hat_caption_shortcode} can turn it
+ * into a lightbox as appropriate. {@see image_send_to_editor} for a
+ * description of the parameters.
+ *
  * @since 1.0.0
- * 
+ *
  * @return string	Image tag markup, possibly wrapped in a link.
  */
 function magic_hat_image_send_to_editor( $html, $id, $caption, $title, $align, $url, $size, $alt ) {
@@ -303,7 +310,9 @@ function magic_hat_image_send_to_editor( $html, $id, $caption, $title, $align, $
 add_filter( 'image_send_to_editor', 'magic_hat_image_send_to_editor', 10, 8 );
 
 /**
- * @see img_caption_shortcode
+ * A custom version of {@see img_caption_shortcode}.
+ *
+ * @since 1.0.0
  */
 function magic_hat_caption_shortcode( $output, $attr, $content ) {
 	$atts = shortcode_atts(
@@ -317,29 +326,29 @@ function magic_hat_caption_shortcode( $output, $attr, $content ) {
         $attr,
         'caption'
 	);
-	
+
     if ( empty( $atts['caption'] ) ) {
         return $content;
 	}
- 
+
     $id = $caption_id = $describedby = '';
- 
+
     if ( $atts['id'] ) {
         $atts['id'] = esc_attr( sanitize_html_class( $atts['id'] ) );
         $id = "id=\"{$atts['id']}\" ";
     }
- 
+
     if ( $atts['caption_id'] ) {
         $atts['caption_id'] = sanitize_html_class( $atts['caption_id'] );
     } elseif ( $atts['id'] ) {
         $atts['caption_id'] = 'caption-' . str_replace( '_', '-', $atts['id'] );
     }
- 
+
     if ( $atts['caption_id'] ) {
         $caption_id  = 'id="' . esc_attr( $atts['caption_id'] ) . '" ';
         $describedby = 'aria-describedby="' . esc_attr( $atts['caption_id'] ) . '" ';
     }
- 
+
 	$class = 'class="' . esc_attr( trim( $atts['align'] . ' ' . $atts['class'] ) ) . '"';
 	$content = do_shortcode( $content );
 	$lightbox = strpos( $content, 'rel="' ) !== false ? 'data-lightbox ' : '';
@@ -351,7 +360,7 @@ function magic_hat_caption_shortcode( $output, $attr, $content ) {
 		{$content}
 		<figcaption {$caption_id}>{$atts['caption']}</figcaption>
 	</figure>";
- 
+
     return $html;
 }
 add_filter( 'img_caption_shortcode', 'magic_hat_caption_shortcode', 10, 3 );
@@ -484,12 +493,14 @@ function magic_hat_playlist_shortcode( $output, $attr, $instance ) {
 	ob_start();
 	if ( 1 === $instance ) {
 		/**
-		 * Prints and enqueues playlist scripts, styles, and JavaScript templates.
+		 * Prints and enqueues playlist scripts, styles, and JavaScript
+		 * templates.
 		 *
 		 * @since 3.9.0
 		 *
-		 * @param string $type  Type of playlist. Possible values are 'audio' or 'video'.
-		 * @param string $style The 'theme' for the playlist. Core provides 'light' and 'dark'.
+		 * @param string $type  Type of playlist. Accepts 'audio' or 'video'.
+		 * @param string $style The 'theme' for the playlist. Core provides
+		 * 						'light' and 'dark'.
 		 */
 		do_action( 'wp_playlist_scripts', $atts['type'], $atts['style'] );
 	}

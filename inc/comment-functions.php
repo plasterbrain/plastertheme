@@ -10,7 +10,8 @@
  */
 
 /**
- * Registers, localizes, and enqueues the script for the comment form and comment Ajax.
+ * Registers, localizes, and enqueues the script for the comment form and
+ * comment Ajax.
  *
  * @link https://codex.wordpress.org/Option_Reference#Discussion
  * @see wp_handle_comment_submission()
@@ -20,7 +21,8 @@
 function magic_hat_enqueue_comments_scripts() {
 	wp_register_script( 'comment-ajax', get_template_directory_uri() . '/assets/js/comment-ajax.min.js', array( 'jquery', 'wp-a11y' ), null, true );
 
-  /* Include Ajax if the user can moderate comments so the inline delete button works. */
+  /* Include Ajax if the user can moderate comments so the inline delete button
+  works. */
 	if ( get_theme_mod( 'use-comments-ajax', true ) && is_singular() && ( comments_open() || current_user_can( 'moderate_comments' ) ) ) {
 		global $wp_rewrite;
 		if ( $wp_rewrite->using_permalinks() ) {
@@ -33,17 +35,26 @@ function magic_hat_enqueue_comments_scripts() {
          *
 		 * @type string $ajaxurl		Admin path to admin-ajax.php.
 		 * @type string $baseurl		Base comment page URL.
-         * @type string $updateMsg      Passed to wp.a11y.speak when the comments refresh.
-		 * @type string $commentOrder	Whether to show newest or oldest comments first.
+         * @type string $updateMsg      Passed to wp.a11y.speak when the
+         * 								comments refresh.
+		 * @type string $commentOrder	Whether to show newest or oldest
+		 * 								comments first.
 		 * @type bool $pageComments		Whether comments are paginated.
 		 * @type bool $commentsPerPage	Number of comments per page.
-		 * @type bool $nameRequired 	Whether the site requires commenters' name/email.
-		 * @type string $serverError	Error displayed when database submission fails (500).
-		 * @type string $floodError		Error displayed when user posts too quickly (429).
-		 * @type string $duplicateError Error displayed for duplicate comments (409).
-		 * @type string $timeout		Error displayed when Ajax returns "timeout" status.
-		 * @type string $postSuccess	Message displayed on successful submission.
-		 * @type string $deleteSuccess	Message displayed when comment is deleted.
+		 * @type bool $nameRequired 	Whether the site requires commenters'
+		 * 								name/email.
+		 * @type string $serverError	Error displayed when database
+		 * 								submission fails (500).
+		 * @type string $floodError		Error displayed when user posts too
+		 * 								quickly (429).
+		 * @type string $duplicateError Error displayed for duplicate comments
+		 * 								(409).
+		 * @type string $timeout		Error displayed when Ajax returns
+		 * 								"timeout" status.
+		 * @type string $postSuccess	Message displayed on successful
+		 * 								submission.
+		 * @type string $deleteSuccess	Message displayed when comment is
+		 * 								deleted.
 		 * @type string $messageEmpty	Error displayed when comment is empty.
 		 * @type string $authorEmpty	Error displayed when name is empty.
 		 * @type string $emailEmpty		Error displayed when email is empty.
@@ -79,6 +90,7 @@ function magic_hat_enqueue_comments_scripts() {
 add_action( 'wp_enqueue_scripts', 'magic_hat_enqueue_comments_scripts' );
 
 /* Allow comment deletion via Ajax on the front end
+@TODO confirmation message for this.
 add_action( 'wp_ajax_delete_comment', 'wp_ajax_delete_comment' );
 add_action( 'wp_ajax_nopriv_delete_comment', 'wp_ajax_delete_comment' );
 */
@@ -144,27 +156,28 @@ add_action( 'wp_ajax_nopriv_magic_hat_comment_handler', 'magic_hat_comment_handl
 
 if ( ! function_exists( 'magic_hat_comment_labels' ) ) :
 /**
- * Adjusts arguments for the comment form to show custom labels for everything. You
- * should modify this function if you want to change the display of the comment form
- * fields, which are also set here.
+ * Adjusts arguments for the comment form to show custom labels for everything.
+ * If you change the display of the comment form fields, you should also modify
+ * this function.
  *
- * If you modify the IDs in the comment form, be sure to edit the variables at the top
- * of comment-ajax.js to reflect your new IDs, or use your own comment AJAX script.
+ * If you change the IDs in the comment form, be sure to edit the variables at
+ * the top of comment-ajax.js to reflect your new IDs, or use your own comment
+ * AJAX script.
  *
  * @since 1.0.0
  *
- * @return array	The list of labels which can be merged with existing arguments
- * 					for {@see comment_form}.
+ * @return array	The list of labels which can be merged with existing
+ * 					arguments for {@see comment_form}.
  */
 function magic_hat_comment_labels() {
-    /* String formatting gets screwed up if we try to set this in the array :T */
-		/* translators: %s is the name of the parent comment. */
+    /* String formatting gets screwed up if we try to set this in the array*/
+	/* translators: %s is the name of the parent comment. */
     $reply_to = empty( get_theme_mod( 'reply-to-title' ) ) ? esc_html__( 'Reply to %s', 'magic-hat' ) : esc_html( get_theme_mod( 'reply-to-title' ) );
     $labels = array(
         'title_reply' => esc_html( get_theme_mod( 'reply-title', __( 'Share your thoughts', 'magic-hat' ) ) ),
         'title_reply_to' => $reply_to,
         'cancel_reply_link' => esc_html( get_theme_mod( 'cancel-reply-title', __( 'Cancel Reply', 'magic-hat' ) ) ),
-        'label_submit' => esc_html( get_theme_mod( 'comment-submit-title', __( 'Post (送信)', 'magic-hat' ) ) ),
+        'label_submit' => esc_html( get_theme_mod( 'comment-submit-title', __( 'Post Comment', 'magic-hat' ) ) ),
     );
 
     /* Wrap the before/after notes in p tags if they exist */
@@ -182,14 +195,14 @@ function magic_hat_comment_labels() {
     $req = $req ? ' class="reqruied"' : '';
     $consent = empty( $commenter['comment_author_email'] ) ? '' : ' checked="checked"';
 
-    /* Get the custom labels for the comment field. If empty, use a generic label that's
-    only visible to screenreaders. */
+    /* Get the custom labels for the comment field. If empty, use a generic
+	label that's only visible to screenreaders. */
     $comment_label = get_theme_mod( 'comment-field-title', esc_html_x( 'Message', 'noun', 'magic-hat' ) );
     $comment_label = empty( $comment_label ) ? '<label class="required screen-reader-text" for="comment">' . esc_html__( 'Your Comment', 'magic-hat' ) : '<label class="required" for="comment">' . esc_html( $comment_label ) ;
 
     $labels['comment_field'] = '
     <div class="comment-form-comment">' .
-        '<h4 class="comment-form-comment__title">' . $comment_label . '</h4>
+        $comment_label . '
         <textarea aria-describedby="comment-error" id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea>
         <p id="comment-error" class="error"></p>
     </div>
@@ -237,9 +250,10 @@ endif;
 
 if ( ! function_exists( 'magic_hat_comment_form_fields' ) ) :
 /**
- * Moves the comment field to the end of the form, wraps the name/email/url fields in a
- * div for formatting and changes their container paragraph(!) elements to divs. This
- * function also handles removing the website field if desired.
+ * Moves the comment field to the end of the form, wraps the name/email/url
+ * fields in a div for formatting and changes their container paragraph(!)
+ * elements to divs. This function also handles removing the website field if
+ * desired.
  *
  * @since 1.0.0
  *
@@ -263,15 +277,16 @@ add_filter( 'comment_form_fields', 'magic_hat_comment_form_fields' );
 
 if ( ! function_exists( 'magic_hat_comment_callback' ) ) :
 /**
- * Echoes each comment in a list (though without a closing li tag), to be used as a callback
- * for {@see wp_list_comments} and by {@see magic_hat_comment_handler}.
+ * Echoes each comment in a list (though without a closing li tag), to be used
+ * as a callback for {@see wp_list_comments} and by
+ * {@see magic_hat_comment_handler}.
  *
  * @todo Ajax mark-as-spam from front end
  *
  * @since 1.0.0
  *
  * @param WP_Comment $comment   Current comment object.
- * @param array $args           Comment display args which don't actually get used here.
+ * @param array $args           Comment display args, unused.
  * @param int $depth            Current comment depth, used for the reply link.
  */
 function magic_hat_comment_callback( $comment, $args, $depth ) {
@@ -312,39 +327,53 @@ function magic_hat_comment_callback( $comment, $args, $depth ) {
                         echo '
                         <a class="meta meta-link meta-link-edit" href="' . esc_url( get_edit_comment_link( $id ) ) . '">';
                         /**
-                         * Filters the content of the "edit comment" link, by default an svg.
+                         * Filters the content of the "edit comment" link, by
+                         * default an svg.
                          *
-                         * @param string    The markup for the content of the link, default an svg pencil icon.
+                         * @param string    The markup for the content of the
+                         * 					link, default an svg pencil icon.
                          * @return string   Filtered markup.
                          */
                         /* translators: "Edit comment {id} by {author}" */
-                        echo apply_filters( 'magic_hat_svg_edit_comment', '<svg xmlns="http://www.w3.org/2000/svg" alt="' . sprintf( esc_html__( 'Edit comment %1$d by %2$s', 'magic-hat' ), $id, $comment->comment_author ) . '" width="12" height="12" viewBox="0 0 24 24"><path d="M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z"/></svg>' );  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                        echo apply_filters(
+							'magic_hat_svg_edit_comment',
+							'<svg xmlns="http://www.w3.org/2000/svg" alt="' . sprintf( esc_html__( 'Edit comment %1$d by %2$s', 'magic-hat' ), $id, $comment->comment_author ) . '" width="12" height="12" viewBox="0 0 24 24"><path d="M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z"/></svg>'
+						); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                         echo '
                         </a>';
 
-												echo '
+						echo '
                         <a id="spam-link" class="meta meta-link meta-link-spam" href="' . esc_url( admin_url( 'comment.php?action=cdc&dt=spam&c=' . $id ) ) . '">';
-												/**
-												 * Filters the content of the "mark comment as spam" link, by default an svg.
-												 *
-												 * @param string	The markup for the content of the link, default a triangular warning icon.
-												 * @return string Filtered markup.
-												 */
-												/* translators: "Mark comment {id} by {author} as spam" */
-												echo apply_filters( 'magic_hat_svg_spam_comment', '<svg xmlns="http://www.w3.org/2000/svg" alt="' . sprintf( esc_html__( 'Mark comment %1$d by %2$s as spam', 'magic-hat' ), $id, $comment->comment_author ) . '" width="12" height="12" viewBox="0 0 24 24"><path d="M12 1l-12 22h24l-12-22zm-1 8h2v7h-2v-7zm1 11.25c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25z"/></svg>'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						/**
+						 * Filters the content of the "mark comment as spam"
+						 * link, by default an svg.
+						 *
+						 * @param string	The markup for the content of the
+						 * 					link, default a warning icon.
+						 * @return string	Filtered markup.
+						 */
+						/*translators: "Mark comment {id} by {author} as spam"*/
+						echo apply_filters(
+							'magic_hat_svg_spam_comment',
+							'<svg xmlns="http://www.w3.org/2000/svg" alt="' . sprintf( esc_html__( 'Mark comment %1$d by %2$s as spam', 'magic-hat' ), $id, $comment->comment_author ) . '" width="12" height="12" viewBox="0 0 24 24"><path d="M12 1l-12 22h24l-12-22zm-1 8h2v7h-2v-7zm1 11.25c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25z"/></svg>'
+						); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                         echo '
-												</a>';
+						</a>';
 
                         echo '
                         <a id="delete-link" class="meta meta-link meta-link-delete" href="' . esc_url( admin_url( 'comment.php?action=cdc&c=' . $id ) ) . '" data-id="' . esc_attr( $id ) . '" data-nonce="' . esc_attr( wp_create_nonce( 'delete-comment_' . $id ) ) . '">';
                         /**
-                         * Filters the content of the "delete comment" link, by default an svg.
+                         * Filters the content of the "delete comment" link, by
+                         * default an svg.
                          *
-                         * @param string    The markup for the content of the link.
+                         * @param string    The markup for the link content.
                          * @return string   Filtered markup.
                          */
                         /* translators: "Delete comment {id} by {author}" */
-                        echo apply_filters( 'magic_hat_svg_delete_comment', '<svg aria-label="' . sprintf( esc_html__( 'Delete comment %1$d by %2$s', 'magic-hat' ), $id, $comment->comment_author ) . '" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"/></svg>' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                        echo apply_filters(
+							'magic_hat_svg_delete_comment',
+							'<svg aria-label="' . sprintf( esc_html__( 'Delete comment %1$d by %2$s', 'magic-hat' ), $id, $comment->comment_author ) . '" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"/></svg>'
+						); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                         echo '
                         </a>';
                     }
@@ -365,11 +394,13 @@ function magic_hat_comment_callback( $comment, $args, $depth ) {
 endif;
 
 /**
- * Determines whether posting or deleting a comment via AJAX requires loading a new page.
+ * Determines whether posting or deleting a comment via AJAX requires loading a
+ * new page.
  *
  * @since 1.0.0
  *
- * @return string 'overflow' and 'total' data attributes to be added to comment list element
+ * @return string The 'overflow' and 'total' data attributes to be added to
+ * 				  comment list element.
  */
 function magic_hat_get_overflow() {
     global $wp_query;
