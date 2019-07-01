@@ -9,15 +9,6 @@
  * @since 1.0.0
  */
 
-/**
- * WooCommerce support.
- */
-/*
-if ( class_exists( 'WooCommerce' ) ) {
-	require get_template_directory() . '/inc/woocommerce.php'; // phpcs:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
-}
-*/
-
 if ( ! function_exists( 'magic_hat_support_plugins' ) ) :
 function magic_hat_support_plugins() {
 	/**
